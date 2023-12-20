@@ -8,6 +8,9 @@ https://www.wxmblog.com/archives/fang-qing-teng-zhi-lian-she-jiao-jiao-you-ruan-
 ![gh_01e98cf10e5a_258](https://www.wxmblog.com/upload/2023/12/gh_01e98cf10e5a_258.jpg)
 ## H5演示地址
 https://www.wxmblog.com/oujili
+## 安卓APK
+下载地址：
+https://www.wxmblog.com/devminio/oujili/2023/12/20/817f71bd-1f7a-4d2c-b949-04c690bbd2c5.apk
 ## 后台管理演示地址
 http://1.14.110.117:8089<br>
 账号：demo<br>
@@ -29,10 +32,10 @@ https://gitee.com/wxmr0/oujili
 # 项目清单
 完整项目清单包含如下<br>
 1 客户端(uni-client)<br>
-2 服务端(reservation-server)<br>
-3 后台管理端(manage)<br>
+2 服务端(oujili-server)<br>
+3 后台管理端(oujili-manage)<br>
 # 项目结构
-## 小程序端
+## 客户端
 ```
 platform
 |--api api接口请求
@@ -66,45 +69,76 @@ platform
 |--......
 ```
 # 技术架构
-## 小程序端
+## 客户端
 开发框架 uniapp<br>
-小程序端使用uniapp开发，一次开发可垮三端平台，支持发布到微信等小程序平台，H5,app端。
+客户端使用uniapp开发，一次开发可垮三端平台，目前支持发布到微信小程序,手机APP（安卓和IOS）,H5端等。
 ## 服务端
 开发语言： java<br>
-开发框架： springboot,spring cloud alibaba 两种版本，设计时按微服务设计开发，鉴于微服务的复杂性，降低维护成本，改造了一个单体springboot版本，功能完全一样<br>
-数据库：mysql redis<br>
+开发框架： springboot,spring cloud alibaba 两种版本，设计时按微服务设计开发，鉴于微服务的复杂性，为降低维护成本，改造了一个单体springboot版本，功能完全一样，可根据自己需求选择合适的版本<br>
+数据库：mysql<br>
+中间件：redis,nginx<br>
 文件存储:  minio<br>
-短信通知：阿里云短信
+支付：微信支付<br>
+其他第三方sdk:高德定位，腾讯定位
 ## 后台管理端
 开发框架： vue
 # 功能模块
 ## 客户端
-- 服务项目浏览
-- 服务项目预约
-- 服务即将到期微信内 短信提醒
-- 修改个人头像昵称
+- 用户资料推荐
+- 用户匹配
+- 在线聊天IM
 - 个人中心
-- 服务订单列表，待服务，已服务，已过期等
-- 取消服务
-- 登录 注销登录
+- 好友列表
+- 我喜欢和喜欢我列表
+- 学历认证
+- 实名认证
+- 修改个人资料
+- 金币充值
 - 微信好友 朋友圈分享
+- 注销账户
+- 注册
 -  ......
 ## 后台管理端
-- 人员管理
-- 分类管理
-- 产品管理
-- 订单管理
+- 资料审核
+- 学历审核
+- 实名审核
+- 前台用户管理
+- 用户统计
 - ......
 
 # 页面展示
 ## 客户端
+![image](https://www.wxmblog.com/upload/2023/12/image.png)
 
+![image-1703078544918](https://www.wxmblog.com/upload/2023/12/image-1703078544918.png)
+
+![image-1703078854853](https://www.wxmblog.com/upload/2023/12/image-1703078854853.png)
+
+![image-1703078965646](https://www.wxmblog.com/upload/2023/12/image-1703078965646.png)
+
+![image-1703079131320](https://www.wxmblog.com/upload/2023/12/image-1703079131320.png)
+
+![image-1703079409929](https://www.wxmblog.com/upload/2023/12/image-1703079409929.png)
+
+![image-1703079533763](https://www.wxmblog.com/upload/2023/12/image-1703079533763.png)
+
+![image-1703079633456](https://www.wxmblog.com/upload/2023/12/image-1703079633456.png)
+
+![image-1703079758837](https://www.wxmblog.com/upload/2023/12/image-1703079758837.png)
+
+![image-1703079924673](https://www.wxmblog.com/upload/2023/12/image-1703079924673.png)
 ## 后台管理端
+![image-1703080008972](https://www.wxmblog.com/upload/2023/12/image-1703080008972.png)
 
+![image-1703080026969](https://www.wxmblog.com/upload/2023/12/image-1703080026969.png)
+
+![image-1703080054976](https://www.wxmblog.com/upload/2023/12/image-1703080054976.png)
+
+![image-1703080089429](https://www.wxmblog.com/upload/2023/12/image-1703080089429.png)
+
+![image-1703080104100](https://www.wxmblog.com/upload/2023/12/image-1703080104100.png)
 # 联系我们
 ## 作者微信
 MMRWXM
-## 	QQ交流群
-
 # 其他优秀开源项目推荐
 https://www.wxmblog.com/categories/open
