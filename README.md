@@ -5,7 +5,7 @@ https://www.wxmblog.com/archives/fang-qing-teng-zhi-lian-she-jiao-jiao-you-ruan-
 # 演示地址
 ## 小程序端小程序演示
 微信扫描下方小程序码，小程序暂未上架，可添加作者微信（MMRWXM）后申请体验<br>
-![gh_01e98cf10e5a_258](https://www.wxmblog.com/upload/2023/12/gh_01e98cf10e5a_258.jpg)
+![8fa1aec2778832896c20454d7d8e8a5e](https://www.wxmblog.com/upload/2023/12/8fa1aec2778832896c20454d7d8e8a5e.jpeg)
 ## H5演示地址
 https://www.wxmblog.com/oujili
 ## 安卓APK
