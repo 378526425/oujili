@@ -32,11 +32,75 @@
 	"subPackages": [{
 			"root": "pageslogin",
 			"pages": [{
-				"path": "index/index",
-				"style": {
-					"navigationStyle": "custom"
+					"path": "index/index",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "index/gender",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "index/date",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				}, {
+					"path": "index/bootpage",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				}]
+		},
+		{
+			"root": "pagesintroduction",
+			"pages": [{
+					"path": "selfIntroduction",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "selectHeight/selectHeight",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "selectJob/selectJob",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+		
+				{
+					"path": "selectSchool/selectSchool",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "selectEducation/selectEducation",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "selectPhoto/selectPhoto",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "aboutme/aboutme",
+					"style": {
+						"navigationStyle": "custom"
+					}
 				}
-			}]
+			]
 		},
 		{
 			"root": "pagesme",
