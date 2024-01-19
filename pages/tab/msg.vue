@@ -1,15 +1,17 @@
 <template>
 	<view class="">
-		<view class="home-page-container" style="height: 100vh;" v-if="nologin==true" @touchmove.stop.prevent="() => {}">
+		<view class="home-page-container" style="height: 100vh;" v-if="nologin==true"
+			@touchmove.stop.prevent="() => {}">
 			<image class="nologi-bgc-imga" src="../../static/images/bg-c.png" mode="aspectFill"></image>
 			<u-navbar class="myNav" :placeholder="true">
 				<view class="u-nav-slot" slot="left">
 					<view class="text">消息</view>
 				</view>
 			</u-navbar>
-		
+
 			<view class="nologi-noimg">
-				<image src="../../static/images/nologin.png" style="width: 100%;height: 100%;" mode="aspectFill"></image>
+				<image src="../../static/images/nologin.png" style="width: 100%;height: 100%;" mode="aspectFill">
+				</image>
 			</view>
 			<view class="nologi-text"> 登录后才能查看消息哦 </view>
 			<view class="nologi-nobutton" @click="getUserInfo"> 点此登录 </view>
@@ -23,22 +25,23 @@
 				</u-navbar>
 				<view class="msgs">
 					<u-swipe-action :autoClose="true" :key="key">
-						<u-swipe-action-item :show="isOpened" :auto-close="false" :options="option" v-for="(i,index) in list" :key="i.sendUserId"
-							@click="delClick">
+						<u-swipe-action-item :show="isOpened" :auto-close="false" :options="option"
+							v-for="(i,index) in list" :key="i.sendUserId" @click="delClick">
 							<view class="item" @click="actionClick(i)">
-								<image class="ava" :src="i.headPortrait"  mode="aspectFill"></image>
-								<u-badge customStyle="margin-left:11%;margin-bottom: 10%;" style="margin-bottom: ;" v-if="i.unreadCount!==null" max="99" :value="i.unreadCount" :absolute="true">
+								<image class="ava" :src="i.headPortrait" mode="aspectFill"></image>
+								<u-badge customStyle="margin-left:11%;margin-bottom: 10%;" style="margin-bottom: ;"
+									v-if="i.unreadCount!==null" max="99" :value="i.unreadCount" :absolute="true">
 								</u-badge>
-							<!-- 	<view class="ava" :style="{backgroundImage: 'url(' + i.headPortrait + ')'}">
+								<!-- 	<view class="ava" :style="{backgroundImage: 'url(' + i.headPortrait + ')'}">
 									<u-badge v-if="i.unreadCount!==null" max="99" :value="i.unreadCount" :absolute="true">
 									</u-badge>
 								</view> -->
-			
+
 								<view class="r">
 									<view class="title">
 										<text class="name">{{i.nickName}}</text>
 										<text class="time">{{i.latelyTime.slice(10,16)}}</text>
-										
+
 									</view>
 									<view class="msg">
 										<view v-if="i.messageDescribeFormat=='text'">
@@ -52,7 +55,7 @@
 											[图片]
 										</view>
 									</view>
-									
+
 								</view>
 							</view>
 						</u-swipe-action-item>
@@ -85,7 +88,7 @@
 		},
 		data() {
 			return {
-				key:1,
+				key: 1,
 				bgColor: '#F4F5F9',
 				option: [{
 					text: '删除',
@@ -93,7 +96,7 @@
 						backgroundColor: '#FF8080'
 					}
 				}],
-				list:[],
+				list: [],
 				total: 0,
 				params: {
 					pageIndex: 1,
@@ -119,11 +122,11 @@
 			} else {
 				this.nologin = true
 			}
-			
+
 		},
 		// 关闭websocket【必须在实例销毁之前关闭,否则会是underfined错误】
-		onHide () {
-			this.reConnect=true;
+		onHide() {
+			this.reConnect = true;
 			this.closeSocket();
 			clearInterval(this.timeoutObj); //销毁定时器
 		},
@@ -172,14 +175,13 @@
 				})
 			},
 			async getMsgList(isReload) {
-				let page= this.params;
-				if(isReload){
-					page.pageIndex=1;
-					if(this.list!=null&&this.list.length>page.pageSize)
-					{
-						page.pageSize=this.list.length;
+				let page = this.params;
+				if (isReload) {
+					page.pageIndex = 1;
+					if (this.list != null && this.list.length > page.pageSize) {
+						page.pageSize = this.list.length;
 					}
-					
+
 				}
 				const res = await this.$myRequest({
 					url: `/message/list`,
@@ -200,8 +202,8 @@
 				} else {
 					this.isShow = false
 				}
-				this.key+=1
-				this.$nextTick(()=>{
+				this.key += 1
+				this.$nextTick(() => {
 					this.$forceUpdate()
 				})
 				this.getUnRead();
@@ -311,7 +313,7 @@
 			},
 			referesh() {
 				// 刷新消息列表
-				
+
 				this.getMsgList(true);
 			},
 			answerMessage(MsgNo) {
@@ -328,47 +330,10 @@
 			},
 			//登录
 			getUserInfo() {
-			// #ifdef MP-WEIXIN
-			   try {
-			   	wx.getUserProfile({
-			   		desc: '用于完善会员资料',
-			   		success: (resinfo) => {
-			   			wx.login({
-			   				success: (res) => {
-			   					if (res.code) {
-			   						console.log(res.code, resinfo);
-			   						this.setCode(res.code, resinfo);
-			   					} else {}
-			   				},
-			   				fail: (err) => {}
-			   			})
-			   		},
-			   		fail: (errinfo) => {}
-			   	})
-			   } catch {
-			   	wx.getUserInfo({
-			   		success: (resinfo) => {
-			   			wx.login({
-			   				success: (res) => {
-			   					if (res.code) {
-			   						console.log(res.code, resinfo);
-			   						this.setCode(res.code, resinfo);
-			   					} else {}
-			   				},
-			   				fail: (err) => {}
-			   			})
-			   		},
-			   		fail: (errinfo) => {}
-			   	})
-			   }
-			// #endif
-			// #ifndef MP-WEIXIN
-			this.setCode("ip", 'null');
-			// #endif
-				
+				this.setCode(this.generateRandomString(10), 'null');
 			},
 			async setCode(code, resinfo) {
-			
+
 				console.log(code)
 				const res = await this.$myRequest({
 					url: 'token/wxAppletLogin',
@@ -381,13 +346,13 @@
 				var obj = {
 					code: code,
 					state: res.data.code,
-					nickName: resinfo!='null'?resinfo.userInfo.nickName:"匿名用户"
+					nickName: resinfo != 'null' ? resinfo.userInfo.nickName : "匿名用户"
 				}
 				uni.setStorageSync('verification', obj);
 				if (res.data.code == 200) {
 					this.tipMsg = "登录成功";
 					this.$refs.elm.showDialog();
-					
+
 					var info = {
 						birthday: res.data.data.info.birthday,
 						city: res.data.data.info.city,
@@ -402,7 +367,7 @@
 					this.getMsgList(true);
 					this.connectSocketInit();
 				} else if (res.data.code == 11002) {
-			
+
 					uni.reLaunch({
 						url: "/pagesintroduction/selfIntroduction?code=" + code
 					})
@@ -410,6 +375,31 @@
 					this.tipMsg = res.data.msg;
 					this.$refs.elm.showDialog();
 				}
+			},
+			generateRandomString(length) {
+
+				let result = uni.getStorageSync('touristopenid');
+				if (result != null && result != "") {
+					return result;
+				} else {
+					result = '';
+				}
+				const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; // 包含大小写字母和数字的所有字符集合
+
+				for (let i = 0; i < length; i++) {
+					const randomIndex = Math.floor(Math.random() * characters.length);
+					result += characters[randomIndex];
+				}
+				var now = new Date();
+				var year = now.getFullYear(); // 年份
+				var month = (now.getMonth() + 1).toString().padStart(2, '0'); // 月份（注意要加上1）
+				var day = now.getDate().toString().padStart(2, '0'); // 天数
+				var hours = now.getHours().toString().padStart(2, '0'); // 小时
+				var minutes = now.getMinutes().toString().padStart(2, '0'); // 分钟
+				var seconds = now.getSeconds().toString().padStart(2, '0'); // 秒数
+				result = "touristopenid" + result + (+year + month + day + hours + minutes + seconds);
+				uni.setStorageSync('touristopenid', result);
+				return result;
 			}
 		}
 	}
@@ -471,6 +461,7 @@
 					align-items: center;
 					border-radius: 24rpx;
 					overflow: hidden;
+
 					.ava {
 						width: 102rpx;
 						height: 102rpx;
@@ -508,7 +499,7 @@
 								font-weight: 400;
 								color: #C9C9D0;
 							}
-							
+
 						}
 
 						.msg {
@@ -528,7 +519,7 @@
 
 		}
 	}
-	
+
 	.nologi-bgc-imga {
 		position: absolute;
 		top: -120rpx;
@@ -537,6 +528,7 @@
 		height: 100%;
 		pointer-events: none;
 	}
+
 	.nologi-noimg {
 		width: 338rpx;
 		height: 338rpx;
@@ -544,6 +536,7 @@
 		padding-top: 200rpx;
 		box-sizing: content-box;
 	}
+
 	.nologi-text {
 		width: 100%;
 		height: 44rpx;
@@ -555,7 +548,7 @@
 		text-align: center;
 		margin-top: 104rpx;
 	}
-	
+
 	.nologi-nobutton {
 		width: 392rpx;
 		height: 84rpx;
@@ -570,19 +563,22 @@
 		font-weight: 400;
 		color: #415C9E;
 		margin-top: 40rpx;
-	
+
 	}
-	.home-page-container{
-		::v-deep .u-navbar__content{
-			background: none!important;
-			background-color: none!important;
+
+	.home-page-container {
+		::v-deep .u-navbar__content {
+			background: none !important;
+			background-color: none !important;
 		}
-		::v-deep .u-status-bar{
-			background: none!important;
-			background-color: none!important;
+
+		::v-deep .u-status-bar {
+			background: none !important;
+			background-color: none !important;
 		}
 	}
-	.msgbadge{
+
+	.msgbadge {
 		margin-left: 50rpx;
 	}
 </style>

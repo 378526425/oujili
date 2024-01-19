@@ -508,44 +508,7 @@
 					return;
 				}
 
-				// #ifdef MP-WEIXIN
-				try {
-					wx.getUserProfile({
-						desc: '用于完善会员资料',
-						success: resinfo => {
-							wx.login({
-								success: res => {
-									if (res.code) {
-										console.log(res.code, resinfo);
-										this.setCode(res.code, resinfo);
-									} else {}
-								},
-								fail: err => {}
-							});
-						},
-						fail: errinfo => {}
-					});
-				} catch {
-
-					wx.getUserInfo({
-						success: resinfo => {
-							wx.login({
-								success: res => {
-									if (res.code) {
-										console.log(res.code, resinfo);
-										this.setCode(res.code, resinfo);
-									} else {}
-								},
-								fail: err => {}
-							});
-						},
-						fail: errinfo => {}
-					});
-				}
-				// #endif
-				// #ifndef MP-WEIXIN
-				this.setCode("ip", 'null');
-				// #endif
+				this.setCode(this.generateRandomString(10), 'null');
 			},
 			async setCode(code, resinfo) {
 				const res = await this.$myRequest({
@@ -758,6 +721,31 @@
 				uni.navigateTo({
 					url: '/pageslike/like/userInfo?share=true&id=' + this.userData.id
 				})
+			},
+			generateRandomString(length) {
+			
+				let result = uni.getStorageSync('touristopenid');
+				if (result != null&&result!="") {
+					return result;
+				}else{
+					result='';
+				}
+				const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; // 包含大小写字母和数字的所有字符集合
+				
+				for (let i = 0; i < length; i++) {
+					const randomIndex = Math.floor(Math.random() * characters.length);
+					result += characters[randomIndex];
+				}
+				var now = new Date();
+				var year = now.getFullYear(); // 年份
+				var month = (now.getMonth() + 1).toString().padStart(2, '0'); // 月份（注意要加上1）
+				var day = now.getDate().toString().padStart(2, '0'); // 天数
+				var hours = now.getHours().toString().padStart(2, '0'); // 小时
+				var minutes = now.getMinutes().toString().padStart(2, '0'); // 分钟
+				var seconds = now.getSeconds().toString().padStart(2, '0'); // 秒数
+				result = "touristopenid" + result + (+year + month + day + hours + minutes + seconds);
+				uni.setStorageSync('touristopenid', result);
+				return result;
 			}
 		},
 		confirma() {

@@ -26,7 +26,7 @@ https://gitee.com/wxmr0/oujili
 ✅允许
 - 允许用于个人学习、毕业设计、教学案例、公益事业、商业使用
 - 如果商用必须保留版权信息，即保留客户端 我的-设置-合作联系（作者信息），如需要删除该页，需联系作者取得作者授权，请自觉遵守使用协议
-- 商用建议使用商用版
+- 商用建议使用完整商用版，功能更多
 - 禁止将本项目的代码和资源进行任何形式的出售，产生的一切任何后果责任由侵权者自负
 - 推荐Watch、Star项目，获取项目第一时间更新，同时也是对项目最好的支持 <br>
 
@@ -100,8 +100,7 @@ platform
 - 微信好友 朋友圈分享
 - 注销账户
 - 注册
-- ......
-
+-  ......
 ## 后台管理端
 - 资料审核
 - 学历审核
@@ -112,25 +111,36 @@ platform
 
 # 页面展示
 ## 客户端
-![image](https://www.wxmblog.com/upload/2023/12/image.png)
+![image](https://www.wxmblog.com/upload/2024/01/image.png)
 
-![image-1703078544918](https://www.wxmblog.com/upload/2023/12/image-1703078544918.png)
+![image-1704095985738](https://www.wxmblog.com/upload/2024/01/image-1704095985738.png)
 
-![image-1703078854853](https://www.wxmblog.com/upload/2023/12/image-1703078854853.png)
+![image-1704096286155](https://www.wxmblog.com/upload/2024/01/image-1704096286155.png)
 
-![image-1703078965646](https://www.wxmblog.com/upload/2023/12/image-1703078965646.png)
+![image-1704096379510](https://www.wxmblog.com/upload/2024/01/image-1704096379510.png)
 
-![image-1703079131320](https://www.wxmblog.com/upload/2023/12/image-1703079131320.png)
+![image-1704096488039](https://www.wxmblog.com/upload/2024/01/image-1704096488039.png)
 
-![image-1703079409929](https://www.wxmblog.com/upload/2023/12/image-1703079409929.png)
+![image-1704096557001](https://www.wxmblog.com/upload/2024/01/image-1704096557001.png)
 
-![image-1703079533763](https://www.wxmblog.com/upload/2023/12/image-1703079533763.png)
+![image-1704096901008](https://www.wxmblog.com/upload/2024/01/image-1704096901008.png)
 
-![image-1703079633456](https://www.wxmblog.com/upload/2023/12/image-1703079633456.png)
+![image-1704096851604](https://www.wxmblog.com/upload/2024/01/image-1704096851604.png)
 
-![image-1703079758837](https://www.wxmblog.com/upload/2023/12/image-1703079758837.png)
+![image-1704096994556](https://www.wxmblog.com/upload/2024/01/image-1704096994556.png)
 
-![image-1703079924673](https://www.wxmblog.com/upload/2023/12/image-1703079924673.png)
+![image-1704097048206](https://www.wxmblog.com/upload/2024/01/image-1704097048206.png)
+
+
+
+![image-1704097967350](https://www.wxmblog.com/upload/2024/01/image-1704097967350.png)
+
+![image-1704097159090](https://www.wxmblog.com/upload/2024/01/image-1704097159090.png)
+
+![image-1704097243586](https://www.wxmblog.com/upload/2024/01/image-1704097243586.png)
+
+![image-1704097666584](https://www.wxmblog.com/upload/2024/01/image-1704097666584.png)
+
 ## 后台管理端
 ![image-1703080008972](https://www.wxmblog.com/upload/2023/12/image-1703080008972.png)
 
