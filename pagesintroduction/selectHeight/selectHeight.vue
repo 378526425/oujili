@@ -18,7 +18,7 @@
 			</view>
 		</view>
 		<view class="select-c">
-			<picker-view value="160" @change="bindChange" :mask-style="fsdfds" class="picker-view"
+			<picker-view  @change="bindChange" :mask-style="fsdfds" class="picker-view"
 				:indicator-style="indicatorStyle" indicator-class="indicator-class">
 				<picker-view-column>
 					<view class="item" v-for="(item,index) in heightArr" :key="index" :class="val==item?'lldl':''">
