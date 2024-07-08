@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.nostalgia.dao.FrUserDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.nostalgia.entity.FrUserEntity" id="frUserMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="openId" column="open_id"/>
+        <result property="status" column="status"/>
+        <result property="headPortrait" column="head_portrait"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="birthday" column="birthday"/>
+        <result property="height" column="height"/>
+        <result property="profession" column="profession"/>
+        <result property="gender" column="gender"/>
+        <result property="school" column="school"/>
+        <result property="education" column="education"/>
+        <result property="educationalType" column="educational_type"/>
+        <result property="aboutMe" column="about_me"/>
+        <result property="interest" column="interest"/>
+        <result property="loveRequirement" column="love_requirement"/>
+        <result property="lon" column="lon"/>
+        <result property="lat" column="lat"/>
+        <result property="city" column="city"/>
+        <result property="marriage" column="marriage"/>
+        <result property="loveGoal" column="love_goal"/>
+        <result property="emotional" column="emotional"/>
+        <result property="annualSalary" column="annual_salary"/>
+        <result property="weChatNumber" column="we_chat_number"/>
+        <result property="imgList" column="img_list"
+                typeHandler="com.wxmblog.nostalgia.common.handle.UserImageListTypeHandler"/>
+        <result property="authStatus" column="auth_status"/>
+        <result property="waitApprovedImg" column="wait_approved_img"
+                typeHandler="com.wxmblog.nostalgia.common.handle.UserImageListTypeHandler"/>
+        <result property="goldBalance" column="gold_balance"/>
+        <result property="userType" column="user_type"/>
+        <result property="sessionKey" column="session_key"/>
+        <result property="unionId" column="union_id"/>
+        <result property="characterType" column="character_type"
+                typeHandler="com.wxmblog.nostalgia.common.handle.CharacterTypeHandler"/>
+        <result property="latelyTime" column="lately_time"/>
+        <result property="additional" column="additional"
+                typeHandler="com.wxmblog.nostalgia.common.handle.AdditionalHandler"/>
+    </resultMap>
+
+
+    <resultMap id="recommendUserInfo"
+               type="com.wxmblog.nostalgia.common.rest.response.front.fruser.RecommendUserInfoResponse">
+        <result property="imgList" column="img_list"
+                typeHandler="com.wxmblog.nostalgia.common.handle.UserImageListTypeHandler"/>
+        <result property="characterType" column="character_type"
+                typeHandler="com.wxmblog.nostalgia.common.handle.CharacterTypeHandler"/>
+        <result property="additional" column="additional"
+                typeHandler="com.wxmblog.nostalgia.common.handle.AdditionalHandler"/>
+    </resultMap>
+
+    <!--首页推荐用户-->
+    <select id="getRecommendUserInfo" resultMap="recommendUserInfo" parameterType="map">
+        select
+        fu.id,
+        fu.head_portrait,
+        fu.nick_name,
+        fu.birthday,
+        fu.height,
+        fu.profession,
+        fu.gender,
+        fu.school,
+        fu.education,
+        fu.educational_type,
+        fu.about_me,
+        fu.interest,
+        fu.love_requirement,
+        fu.city,
+        fu.marriage,
+        fu.emotional,
+        fu.annual_salary,
+        fu.img_list,
+        fu.character_type,
+        fu.birthday,
+        (select count(1) from user_matching um where um.del_flag=0 and
+        um.user_id=fu.id and um.other_user=#{selfId} and um.result=true) as mattrue,
+        fu.additional
+        from
+        fr_user fu
+        <where>
+            fu.del_flag=0 and fu.status='ENABLE' and fu.auth_status='PASS' and fu.img_list is not null
+            <if test="gender!=null and gender!=''">
+                and fu.gender!=#{gender}
+            </if>
+            <if test="selfId!=null and selfId!=''">
+                and fu.id!=#{selfId} and (select count(1) from user_matching um where um.del_flag=0 and
+                um.user_id=#{selfId} and um.other_user=fu.id)&lt;=0
+            </if>
+            <if test="startDate!=null and startDate!=''">
+                <![CDATA[ and DATE_FORMAT(fu.birthday, '%Y-%m-%d %T')>=  DATE_FORMAT(#{startDate}, '%Y-%m-%d %T') ]]>
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                <![CDATA[ and DATE_FORMAT(fu.birthday, '%Y-%m-%d %T')<=  DATE_FORMAT(#{endDate}, '%Y-%m-%d %T') ]]>
+            </if>
+            <if test="city!=null">
+                and (fu.city in
+                <foreach collection="city" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+                or fu.user_type='Dummy')
+
+            </if>
+        </where>
+        order by mattrue desc,fu.lately_time desc
+        <if test="size!=null">
+            limit #{size}
+        </if>
+
+    </select>
+
+    <resultMap id="likeResponse"
+               type="com.wxmblog.nostalgia.common.rest.response.front.fruser.LikeResponse">
+    </resultMap>
+
+    <select id="getPersonalLike" resultMap="likeResponse" parameterType="int">
+select
+(select count(1) from user_matching um where um.del_flag=0 and um.user_id=#{id} and um.result=true) as ilike,
+(select count(1) from user_matching um where um.del_flag=0 and um.other_user =#{id} and um.result=true) as likeMe,
+(select count(1) from user_matching umm where umm.del_flag=0 and umm.user_id=#{id} and umm.result=true and (select count(1) from user_matching um where um.del_flag=0 and um.other_user =#{id} and um.user_id =umm.other_user and um.result=true)>0) as lovers
+    </select>
+
+
+    <resultMap id="userPageResponse"
+               type="com.wxmblog.nostalgia.common.rest.response.admin.user.UserPageResponse">
+    </resultMap>
+
+    <select id="getExaminePage" resultMap="userPageResponse"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.admin.user.UserPageRequest">
+        select
+        fu.id,
+        fu.create_time,
+        fu.status,
+        fu.head_portrait,
+        fu.nick_name,
+        fu.gender,
+        fu.city,
+        fu.additional->>'$.waitApprovedStatus' as waitApprovedStatus,
+        fu.user_type,
+        fu.lately_time
+        from
+        fr_user fu
+        <where>
+            fu.del_flag=0
+            <if test="authStatus!=null">
+                and fu.additional->>'$.waitApprovedStatus'=#{authStatus}
+            </if>
+            <if test="userType!=null">
+                and fu.user_type=#{userType}
+            </if>
+        </where>
+        order by fu.lately_time desc
+    </select>
+
+
+    <resultMap id="identityResponse"
+               type="com.wxmblog.nostalgia.common.rest.response.admin.user.UserIdentityPageResponse">
+    </resultMap>
+    <select id="getIdentityPage" resultMap="identityResponse"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.admin.user.UserPageRequest">
+        select
+        fu.id,
+        fu.create_time,
+        fu.status,
+        fu.head_portrait,
+        fu.nick_name,
+        fu.gender,
+        fu.city,
+        fu.additional->>'$.identityAuth' as identityAuth,
+        fu.user_type,
+        fu.lately_time
+        from
+        fr_user fu
+        <where>
+            fu.del_flag=0
+            <if test="authStatus!=null">
+                and fu.additional->>'$.identityAuth'=#{authStatus}
+            </if>
+            <if test="userType!=null">
+                and fu.user_type=#{userType}
+            </if>
+        </where>
+        order by fu.lately_time desc
+    </select>
+
+
+    <resultMap id="educationPage"
+               type="com.wxmblog.nostalgia.common.rest.response.admin.user.UserEducationPageResponse">
+    </resultMap>
+    <select id="getUserEducationPage" resultMap="educationPage"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.admin.user.UserPageRequest">
+        select
+        fu.id,
+        fu.create_time,
+        fu.status,
+        fu.head_portrait,
+        fu.nick_name,
+        fu.gender,
+        fu.city,
+        fu.additional->>'$.educationAuth' as educationAuth,
+        fu.user_type,
+        fu.lately_time
+        from
+        fr_user fu
+        <where>
+            fu.del_flag=0
+            <if test="authStatus!=null">
+                and fu.additional->>'$.educationAuth'=#{authStatus}
+            </if>
+            <if test="userType!=null">
+                and fu.user_type=#{userType}
+            </if>
+        </where>
+        order by fu.lately_time desc
+    </select>
+
+    <resultMap id="userInfoPage"
+               type="com.wxmblog.nostalgia.common.rest.response.admin.user.UserInfoPageResponse">
+    </resultMap>
+    <select id="getUserInfoPage" resultMap="userInfoPage"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.admin.user.UserInfoRequest">
+        select
+        fu.id,
+        fu.create_time,
+        fu.status,
+        fu.head_portrait,
+        fu.nick_name,
+        fu.gender,
+        fu.city,
+        fu.user_type,
+        fu.lately_time,
+        fu.auth_status
+        from
+        fr_user fu
+        <where>
+            fu.del_flag=0
+            <if test="userType!=null">
+                and fu.user_type=#{userType}
+            </if>
+            <if test="nickName!=null and nickName!=''">
+                and fu.nick_name like #{nickName}
+            </if>
+            <if test="gender!=null">
+                and fu.gender=#{gender}
+            </if>
+            <if test="city!=null and city!=''">
+                and fu.city like #{city}
+            </if>
+            <if test="status!=null">
+                and fu.status=#{status}
+            </if>
+            <if test="authStatus!=null">
+                and fu.auth_status=#{authStatus}
+            </if>
+            <if test="createTimeStart!=null and createTimeStart!=''">
+                <![CDATA[ and DATE_FORMAT(fu.create_time, '%Y-%m-%d %T')>=  DATE_FORMAT(#{createTimeStart}, '%Y-%m-%d 00:00:00') ]]>
+            </if>
+            <if test="createTimeEnd!=null and createTimeEnd!=''">
+                <![CDATA[ and DATE_FORMAT(fu.create_time, '%Y-%m-%d %T')<=  DATE_FORMAT(#{createTimeEnd}, '%Y-%m-%d 23:59:59') ]]>
+            </if>
+            <if test="latelyTimeStart!=null and latelyTimeStart!=''">
+                <![CDATA[ and DATE_FORMAT(fu.lately_time, '%Y-%m-%d %T')>=  DATE_FORMAT(#{latelyTimeStart}, '%Y-%m-%d 00:00:00') ]]>
+            </if>
+            <if test="latelyTimeEnd!=null and latelyTimeEnd!=''">
+                <![CDATA[ and DATE_FORMAT(fu.lately_time, '%Y-%m-%d %T')<=  DATE_FORMAT(#{latelyTimeEnd}, '%Y-%m-%d 23:59:59') ]]>
+            </if>
+        </where>
+        order by fu.lately_time desc
+    </select>
+
+    <resultMap id="genderPie"
+               type="com.wxmblog.nostalgia.common.rest.response.admin.statistic.ProportionResponse">
+    </resultMap>
+    <select id="getGenderPie" resultMap="genderPie">
+       select
+	count(1) as value,
+	case
+		fu.gender when 'MALE' then '男'
+		when 'FEMALE' then '女'
+		else '其他'
+	end as name
+from
+	fr_user fu
+group by
+	fu.gender,
+	fu.del_flag,
+	fu.user_type
+having
+	fu.del_flag = 0
+	and fu.user_type = 'Normal'
+    </select>
+
+    <select id="getCityBar" resultMap="genderPie">
+    select
+	count(1) as value,
+	fu.city as name
+from
+	fr_user fu
+group by
+    fu.city,
+	fu.del_flag,
+	fu.user_type
+having
+	fu.del_flag = 0
+	and fu.user_type = 'Normal'
+order by count(1) desc
+    </select>
+
+
+    <select id="getUserRegisterStatistic" resultMap="genderPie"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.admin.statistic.UserRegisterStatisticRequest">
+
+        select
+        count(1) as value,
+        DATE_FORMAT(fu.create_time, '%Y-%m-%d') as name
+        from
+        (select fu.create_time from fr_user fu where
+        fu.del_flag = 0
+        and fu.user_type = 'Normal'
+        <if test="createTimeStart!=null and createTimeStart!=''">
+            <![CDATA[ and DATE_FORMAT(fu.create_time, '%Y-%m-%d %T')>=  DATE_FORMAT(#{createTimeStart}, '%Y-%m-%d 00:00:00') ]]>
+        </if>
+        <if test="createTimeEnd!=null and createTimeEnd!=''">
+            <![CDATA[ and DATE_FORMAT(fu.create_time, '%Y-%m-%d %T')<=  DATE_FORMAT(#{createTimeEnd}, '%Y-%m-%d 23:59:59') ]]>
+        </if>
+        ) fu
+        group by
+        DATE_FORMAT(fu.create_time, '%Y-%m-%d')
+        order by DATE_FORMAT(fu.create_time, '%Y-%m-%d') asc
+    </select>
+</mapper>

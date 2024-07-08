@@ -1,0 +1,14 @@
+#spring:
+#  cloud:
+#    nacos:
+#      config:
+#        server-addr: 81.69.247.192:8848
+#        namespace: a85b29af-3239-4c42-ab92-18e7d30c09fb
+#        extension-configs[0]:
+#          data-id: application.yml
+#          group: dev
+#          refresh: true
+#        extension-configs[1]:
+#          data-id: datasource.yaml
+#          group: dev
+#          refresh: true

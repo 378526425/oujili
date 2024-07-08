@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--scan: 当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。
+　　　　scanPeriod: 设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。
+　　　　debug: 当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。-->
+<configuration scan="true" scanPeriod="10 seconds">
+
+    <contextName>JPANAME</contextName>
+    <property name="log.path" value="D:\\temp\\errlog"/>
+    <property name="server.name" value="auth-api-ext-impl"/>
+    <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"/>
+    <property name="log.file" value="${log.path}/${server.name}.%d{yyyyMMdd}.%i.log.gz"/>
+
+    <!-- 控制台输出 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${log.file}</FileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+
+            <maxFileSize>50MB</maxFileSize>
+        </rollingPolicy>
+
+        <ImmediateFlush>true</ImmediateFlush>
+    </appender>
+
+    <appender name="asyncFileAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>5000</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>false</includeCallerData>
+        <appender-ref ref="fileAppender"/>
+    </appender>
+
+    <!-- 日志输出级别 -->
+    <root level="INFO">
+        <appender-ref ref="asyncFileAppender"/>
+        <appender-ref ref="console"/>
+    </root>
+</configuration>
+

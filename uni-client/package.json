@@ -1,0 +1,10 @@
+{
+    "id": "images-adaptation",
+    "name": "实现朋友圈动态，qq说说图片自适应排列",
+    "version": "1.0.0",
+    "description": "实现朋友圈动态，qq说说图片自适应排列",
+    "keywords": [
+        "#uniapp",
+        "#vue"
+    ]
+}

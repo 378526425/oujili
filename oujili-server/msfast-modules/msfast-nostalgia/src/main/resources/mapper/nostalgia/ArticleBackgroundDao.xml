@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.nostalgia.dao.ArticleBackgroundDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.nostalgia.entity.ArticleBackgroundEntity" id="articleBackgroundMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="userId" column="user_id"/>
+        <result property="backgroundUrl" column="background_url"/>
+    </resultMap>
+
+
+</mapper>

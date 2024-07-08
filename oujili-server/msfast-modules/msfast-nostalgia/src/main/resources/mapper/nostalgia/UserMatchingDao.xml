@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.nostalgia.dao.UserMatchingDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.nostalgia.entity.UserMatchingEntity" id="userMatchingMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="userId" column="user_id"/>
+        <result property="result" column="result"/>
+        <result property="otherUser" column="other_user"/>
+        <result property="descInfo" column="desc_info"/>
+    </resultMap>
+
+    <resultMap id="likeMePageResponse" type="com.wxmblog.nostalgia.common.rest.response.front.matching.LikeMePageResponse">
+    </resultMap>
+
+    <!--个人中心 我的喜欢列表-->
+    <select id="getLikeMePage" resultMap="likeMePageResponse" parameterType="Integer">
+             select
+	fu.id,
+	fu.head_portrait,
+	case (select count(1) from user_matching um1 where um1.del_flag=0 and um1.`result` and um1.user_id=#{id} and um1.other_user=fu.id)
+	when 0 then 'LIKE_ME'
+	else 'SUCCESS' end as matchingStatus,
+	um.desc_info,
+	um.is_unlock
+from
+	user_matching um
+left join fr_user fu on
+	fu.id = um.user_id
+where
+	um.del_flag = 0
+	and um.`result`
+	and fu.del_flag = 0
+	and fu.status = 'ENABLE'
+	and um.user_id != #{id}
+	and um.other_user = #{id}
+order by um.id desc
+    </select>
+
+    <resultMap id="successPageResponse"
+               type="com.wxmblog.nostalgia.common.rest.response.front.matching.SuccessPageResponse">
+    </resultMap>
+
+    <!--个人中心 相互喜欢列表-->
+    <select id="getSuccessPage" resultMap="successPageResponse" parameterType="Integer">
+              select
+	fu.id,
+	fu.head_portrait,
+	fu.nick_name,
+	fu.birthday,
+	fu.gender,
+	fu.height,
+	fu.city
+from
+	user_matching um
+left join fr_user fu on
+	fu.id = um.other_user
+where
+	um.del_flag = 0
+	and um.`result`
+	and fu.del_flag = 0
+	and fu.status = 'ENABLE'
+	and um.user_id = #{id}
+	and (select count(1) from user_matching um1 where um1.del_flag=0 and um1.`result` and um1.user_id=um.other_user and um1.other_user=#{id})>0
+order by um.id desc
+    </select>
+
+	<resultMap id="likePageResponse"
+			   type="com.wxmblog.nostalgia.common.rest.response.front.matching.LikePageResponse">
+	</resultMap>
+
+	<!--个人中心 相互喜欢列表-->
+	<select id="getLikePage" resultMap="likePageResponse" parameterType="Integer">
+              select
+	fu.id,
+	fu.head_portrait,
+	fu.nick_name,
+	fu.birthday,
+	fu.gender,
+	fu.height,
+	fu.city,
+	case (select count(1) from user_matching um1 where um1.del_flag=0 and um1.`result` and um1.user_id=um.other_user and um1.other_user=#{id})
+	when 0 then 'LIKE'
+	else 'SUCCESS' end as matchingStatus
+from
+	user_matching um
+left join fr_user fu on
+	fu.id = um.other_user
+where
+	um.del_flag = 0
+	and um.`result`
+	and fu.del_flag = 0
+	and fu.status = 'ENABLE'
+	and um.user_id = #{id}
+order by um.id desc
+    </select>
+
+
+</mapper>

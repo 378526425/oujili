@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>msfast-parent</artifactId>
+        <groupId>com.wxmblog</groupId>
+        <version>0.0.1</version>
+    </parent>
+    <groupId>com.wxmblog</groupId>
+    <artifactId>msfast-gateway</artifactId>
+    <version>0.0.1</version>
+    <name>msfast-gateway</name>
+    <description>服务网关</description>
+    <properties>
+
+    </properties>
+    <dependencies>
+        <!--服务必要依赖-->
+        <dependency>
+            <groupId>com.wxmblog</groupId>
+            <artifactId>msfast-base-common</artifactId>
+            <version>${msfast.base.common.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.springfox</groupId>
+                    <artifactId>springfox-swagger2</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-models</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.xiaoymin</groupId>
+                    <artifactId>swagger-bootstrap-ui</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.redisson</groupId>
+                    <artifactId>redisson</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${springboot.maven.plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

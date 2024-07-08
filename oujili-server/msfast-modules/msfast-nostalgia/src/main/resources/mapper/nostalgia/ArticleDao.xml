@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.nostalgia.dao.ArticleDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.nostalgia.entity.ArticleEntity" id="articleMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="content" column="content"/>
+        <result property="img" column="img" typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+        <result property="userId" column="user_id"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="likeCount" column="like_count"/>
+    </resultMap>
+
+
+    <resultMap id="articlePageResponse"
+               type="com.wxmblog.nostalgia.common.rest.response.front.article.ArticlePageResponse">
+        <result property="img" column="img"
+                typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+    </resultMap>
+
+    <!--朋友圈 动态列表-->
+    <select id="getArticlePage" resultMap="articlePageResponse"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.article.ArticlePageRequest">
+        SELECT
+        ar.id,
+        ar.user_id,
+        fu.head_portrait,
+        fu.gender,
+        fu.nick_name,
+        case when fu.user_type='Normal' then concat(
+        RIGHT ( YEAR ( fu.birthday ), 2 ),
+        '·',
+        fu.city,
+        '·',
+        fu.education,
+        '·',
+        fu.profession
+        ) else concat(
+        RIGHT ( YEAR ( fu.birthday ), 2 ),
+        '·',
+        (select owuser.city from fr_user owuser where owuser.id=#{userId}),
+        '·',
+        fu.education,
+        '·',
+        fu.profession
+        ) end AS information,
+        ar.content,
+        ar.img,
+        ar.comment_count,
+        ar.like_count,
+        ar.create_time,
+        case when (select count(1) from user_to_like ut where ut.del_flag=0 and ut.praise_type='ARTICLE' and
+        ut.target_id=ar.id and ut.user_id=#{userId})=0 then false else true end as isLike
+        FROM
+        article ar
+        LEFT JOIN fr_user fu ON ar.user_id = fu.id
+        <where>
+            ar.del_flag =0
+            <if test="tabType!=null and tabType.name()=='FOLLOW'">
+                and (select count(1) from user_matching um where um.del_flag=0 and um.user_id=#{userId} and
+                um.result=true and um.other_user=ar.user_id)>0
+            </if>
+            <if test="tabType!=null and tabType.name()=='CITY'">
+                and (fu.city in
+                <foreach collection="myCity" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach> or fu.user_type='Dummy')
+            </if>
+        </where>
+        order by ar.id desc
+    </select>
+
+
+    <resultMap id="articleInfoResponse"
+               type="com.wxmblog.nostalgia.common.rest.response.front.article.ArticleInfoResponse">
+        <result property="img" column="img"
+                typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+    </resultMap>
+
+    <!--朋友圈 动态列表-->
+    <select id="articleInfo" resultMap="articleInfoResponse"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.article.ArticleInfoRequest">
+        SELECT
+        ar.id,
+        ar.user_id,
+        fu.head_portrait,
+        fu.gender,
+        fu.nick_name,
+        concat(
+        RIGHT ( YEAR ( fu.birthday ), 2 ),
+        '·',
+        fu.city,
+        '·',
+        fu.education,
+        '·',
+        fu.profession
+        ) AS information,
+        ar.content,
+        ar.img,
+        ar.comment_count,
+        ar.like_count,
+        ar.create_time,
+        case when (select count(1) from user_to_like ut where ut.del_flag=0 and ut.praise_type='ARTICLE' and
+        ut.target_id=ar.id and ut.user_id=#{userId})=0 then false else true end as isLike
+        FROM
+        article ar
+        LEFT JOIN fr_user fu ON ar.user_id = fu.id
+        <where>
+            ar.id=#{id}
+        </where>
+        order by ar.id desc
+    </select>
+
+
+    <resultMap id="articleCommentPageResponse"
+               type="com.wxmblog.nostalgia.common.rest.response.front.article.ArticleCommentPageResponse">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="headPortrait" column="head_portrait"/>
+        <result property="gender" column="gender"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="information" column="information"/>
+        <result property="content" column="content"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="replyCount" column="reply_count"/>
+        <result property="isLike" column="isLike"/>
+        <result property="createTime" column="create_time"/>
+        <result property="deleteBtn" column="deleteBtn"/>
+        <association property="lastCommentReply"
+                     javaType="com.wxmblog.nostalgia.common.rest.response.front.article.CommentReplyPageResponse">
+            <id property="id" column="replyId"/>
+            <result property="userId" column="replyUserId"/>
+            <result property="headPortrait" column="replyHeadPortrait"/>
+            <result property="gender" column="replyGender"/>
+            <result property="nickName" column="replyNickName"/>
+            <result property="content" column="replyConent"/>
+            <result property="likeCount" column="replyLikeCount"/>
+            <result property="isLike" column="replyIsLike"/>
+            <result property="residueReply" column="residueReply"/>
+            <result property="replyUserId" column="replyObjectUserId"/>
+            <result property="replyUserName" column="replyUserName"/>
+            <result property="createTime" column="replyCreateTime"/>
+            <result property="deleteBtn" column="replyDeleteBtn"/>
+        </association>
+    </resultMap>
+    <!--朋友圈 动态评论列表-->
+    <select id="getCommentPage" resultMap="articleCommentPageResponse"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.article.ArticleCommentPageRequest">
+
+        SELECT ac.id,
+               ac.user_id,
+               fu.head_portrait,
+               fu.gender,
+               fu.nick_name,
+               concat(
+                   RIGHT ( YEAR ( fu.birthday ), 2 ), '·',
+                                                      fu.city,
+                                                      '·',
+                                                      fu.education,
+                                                      '·',
+                                                      fu.profession
+               )                     AS information,
+               ac.content,
+               ac.like_count,
+               ac.reply_count,
+               CASE
+
+                   WHEN (SELECT count(1)
+                         FROM user_to_like ut
+                         WHERE ut.del_flag = 0
+                           AND ut.praise_type = 'COMMENT'
+                           AND ut.target_id = ac.id
+                           AND ut.user_id = #{userId}) = 0 then false
+                   else true end     as isLike,
+               ac.create_time,
+               CASE
+
+                   WHEN ac.user_id = #{userId} then true
+                   else false end    as deleteBtn,
+               cr.id                 as replyId,
+               cr.user_id            as replyUserId,
+               fureply.head_portrait as replyHeadPortrait,
+               fureply.gender        as replyGender,
+               fureply.nick_name     as replyNickName,
+               cr.content            as replyConent,
+               cr.like_count         as replyLikeCount,
+               CASE
+                   WHEN (SELECT count(1)
+                         FROM user_to_like ut
+                         WHERE ut.del_flag = 0
+                           AND ut.praise_type = 'REPLY'
+                           AND ut.target_id = cr.id
+                           AND ut.user_id = #{userId}) = 0 then false
+                   else true end     as replyIsLike,
+               cr.create_time        as replyCreateTime,
+               (select count(1)
+                from comment_reply crc
+                where crc.del_flag = 0
+                  and crc.article_comment_id = ac.id
+                  and crc.id!=cr.id) as residueReply, replyObject.user_id as replyObjectUserId, fureplyObject.nick_name as replyUserName, CASE
+            WHEN cr.user_id =
+               #{userId} then true else false
+        end
+        as replyDeleteBtn
+        FROM article_comment ac
+                 LEFT JOIN fr_user fu ON ac.user_id = fu.id
+                 LEFT JOIN (select * from comment_reply where del_flag = 0) cr ON ac.last_comment_reply_id = cr.id
+                 LEFT JOIN fr_user fureply ON cr.user_id = fureply.id
+                 LEFT JOIN (select * from comment_reply where del_flag = 0) replyObject ON cr.comment_reply_id = replyObject.id
+                 LEFT JOIN fr_user fureplyObject ON replyObject.user_id = fureplyObject.id
+        WHERE ac.del_flag = 0
+          and ac.article_id =
+        #{articleId}
+        ORDER
+        BY
+        ac.id
+        DESC
+    </select>
+
+
+    <resultMap id="commentReplyPageResponse"
+               type="com.wxmblog.nostalgia.common.rest.response.front.article.CommentReplyPageResponse">
+    </resultMap>
+    <!--朋友圈 动态评论列表-->
+    <select id="getReplyPage" resultMap="commentReplyPageResponse"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.article.ReplyRequest">
+        SELECT cr.id,
+               cr.user_id,
+               fu.head_portrait,
+               fu.gender,
+               fu.nick_name,
+               cr.content,
+               cr.like_count,
+               cr.create_time,
+               cr.comment_reply_user_id AS replyUserId,
+               replyuser.nick_name      AS replyUserName,
+               CASE
+                   WHEN (SELECT count(1)
+                         FROM user_to_like ut
+                         WHERE ut.del_flag = 0
+                           AND ut.praise_type = 'REPLY'
+                           AND ut.target_id = cr.id
+                           AND ut.user_id = #{userId}) = 0 then false
+                   else true end        as isLike,
+               CASE
+                   WHEN cr.user_id = #{userId} then true
+                   else false end       as deleteBtn
+        FROM comment_reply cr
+                 LEFT JOIN fr_user fu ON cr.user_id = fu.id
+                 LEFT JOIN fr_user replyuser ON cr.comment_reply_user_id = replyuser.id
+                 LEFT JOIN article_comment ac ON cr.article_comment_id = ac.id
+        WHERE cr.del_flag = 0
+          <if test="reload==null or reload==false">
+              AND cr.id != ac.last_comment_reply_id
+          </if>
+
+        AND cr.article_comment_id=#{commentId}
+        ORDER BY cr.id DESC
+    </select>
+
+
+    <resultMap id="userArticlePageResponse"
+               type="com.wxmblog.nostalgia.common.rest.response.front.article.UserArticlePageResponse">
+        <result property="img" column="img"
+                typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+    </resultMap>
+    <!--朋友圈 用户朋友圈列表-->
+    <select id="getUserArticle" resultMap="userArticlePageResponse"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.article.UserArticleRequest">
+        select ar.id,
+               ar.content,
+               ar.img,
+               ar.comment_count,
+               ar.like_count,
+               ar.create_time,
+               CASE
+                   WHEN (SELECT count(1)
+                         FROM user_to_like ut
+                         WHERE ut.del_flag = 0
+                           AND ut.praise_type = 'ARTICLE'
+                           AND ut.target_id = ar.id
+                           AND ut.user_id = #{ownerId}) = 0 then false
+                   else true end as isLike,
+               CASE
+                   WHEN ar.user_id = #{ownerId} then true
+                   ELSE FALSE
+                   END           AS deleteBtn
+        FROM article ar
+        WHERE ar.del_flag = 0
+          and ar.user_id = #{userId}
+        ORDER BY ar.id DESC
+
+    </select>
+
+
+    <!--点赞过的动态-->
+    <select id="getPraiseArticle" resultMap="userArticlePageResponse"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.article.UserArticleRequest">
+        select ar.id,
+               ar.content,
+               ar.img,
+               ar.comment_count,
+               ar.like_count,
+               ar.create_time,
+               CASE
+                   WHEN (SELECT count(1)
+                         FROM user_to_like ut
+                         WHERE ut.del_flag = 0
+                           AND ut.praise_type = 'ARTICLE'
+                           AND ut.target_id = ar.id
+                           AND ut.user_id = #{ownerId}) = 0 then false
+                   else true end as isLike,
+               CASE
+                   WHEN ar.user_id = #{ownerId} then true
+                   ELSE FALSE
+                   END           AS deleteBtn
+        FROM article ar
+        WHERE ar.del_flag = 0
+          and (SELECT count(1)
+               FROM user_to_like ut
+               WHERE ut.del_flag = 0
+                 AND ut.praise_type = 'ARTICLE'
+                 AND ut.target_id = ar.id
+                 AND ut.user_id = #{ownerId})>0
+        ORDER BY ar.id DESC
+
+    </select>
+
+    <!--我评论过-->
+    <select id="getCommentArticle" resultMap="userArticlePageResponse"
+            parameterType="com.wxmblog.nostalgia.common.rest.request.article.UserArticleRequest">
+        select ar.id,
+               ar.content,
+               ar.img,
+               ar.comment_count,
+               ar.like_count,
+               ar.create_time,
+               CASE
+                   WHEN (SELECT count(1)
+                         FROM user_to_like ut
+                         WHERE ut.del_flag = 0
+                           AND ut.praise_type = 'ARTICLE'
+                           AND ut.target_id = ar.id
+                           AND ut.user_id = #{ownerId}) = 0 then false
+                   else true end as isLike,
+               CASE
+                   WHEN ar.user_id = #{ownerId} then true
+                   ELSE FALSE
+                   END           AS deleteBtn
+        FROM article ar
+        WHERE ar.del_flag = 0
+          and ((select count(1) from article_comment ac where ac.del_flag=0 and ac.user_id=#{ownerId} and ac.article_id=ar.id)>0 or (select count(1) from comment_reply cr left join article_comment crac on cr.article_comment_id=crac.id where cr.del_flag=0 and cr.user_id=#{ownerId} and crac.article_id=ar.id) >0)
+        ORDER BY ar.id DESC
+
+    </select>
+
+    <!--朋友圈 用户朋友圈列表-->
+    <select id="getUserArticleView" resultType="string"
+            parameterType="integer">
+        SELECT jt.value
+        FROM article
+                 CROSS JOIN JSON_TABLE(
+                article.img,
+                "$[*]" COLUMNS (
+    value VARCHAR(255) PATH "$"
+  )
+                            ) AS jt
+        WHERE article.del_flag = 0
+          and article.img is not null
+          and article.user_id = #{userId}
+        order by article.id desc limit 4;
+
+    </select>
+
+    <select id="selectCountSum" resultType="com.wxmblog.nostalgia.common.rest.response.front.article.ArticleCount" parameterType="integer">
+        select count(1) as articleCount,
+               sum(ar.like_count) as commentCount
+        from article ar
+        where ar.del_flag = 0
+          and ar.user_id = #{userId}
+    </select>
+
+</mapper>

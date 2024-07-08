@@ -1,0 +1,329 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/tab/index",
+			"style": {
+				"navigationStyle": "custom",
+				"backgroundColor": "#F4F5F9",
+				"backgroundColorTop": "#F4F5F9",
+				"backgroundColorBottom": "#F4F5F9"
+			}
+		},
+		{
+			"path": "pages/tab/my",
+			"style": {
+				"navigationStyle": "custom",
+				"backgroundColor": "#F4F5F9",
+				"backgroundColorTop": "#F4F5F9"
+			}
+		},
+		{
+			"path": "pages/tab/msg",
+			"style": {
+				"navigationStyle": "custom",
+				"backgroundColor": "#F4F5F9",
+				"backgroundColorTop": "#F4F5F9",
+				"backgroundColorBottom": "#F4F5F9",
+				"enablePullDownRefresh": false,
+				"onReachBottomDistance": 50
+			}
+		},
+		{
+			"path" : "pages/tab/community",
+			"style" : 
+			{
+				"navigationStyle": "custom",
+				"backgroundColor": "#F4F5F9",
+				"backgroundColorTop": "#F4F5F9",
+				"backgroundColorBottom": "#F4F5F9",
+				"enablePullDownRefresh": false,
+				"onReachBottomDistance": 50,
+				"disableScroll": true
+			}
+		}
+	],
+	"subPackages": [{
+			"root": "pageslogin",
+			"pages": [{
+					"path": "index/index",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "index/gender",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "index/date",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				}, {
+					"path": "index/bootpage",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		},
+		{
+			"root": "pagesintroduction",
+			"pages": [{
+					"path": "selfIntroduction",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "selectHeight/selectHeight",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "selectJob/selectJob",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+
+				{
+					"path": "selectSchool/selectSchool",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "selectEducation/selectEducation",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "selectPhoto/selectPhoto",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "aboutme/aboutme",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				}
+				
+			]
+		},
+		{
+			"root": "pagesme",
+			"pages": [{
+					"path": "me/improveInformation",
+					"style": {
+						"navigationBarTitleText": "编辑资料",
+						"backgroundColor": "#F4F5F9",
+						"backgroundColorTop": "#F4F5F9",
+						"backgroundColorBottom": "#F4F5F9",
+						"navigationBarBackgroundColor": "#F4F5F9"
+					}
+				},
+				{
+					"path": "me/identityauthentication",
+					"style": {
+						"navigationBarTitleText": "身份认证",
+						"backgroundColor": "#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+
+				{
+					"path": "me/doubleauth",
+					"style": {
+						"navigationBarTitleText": "双重认证",
+						"backgroundColor": "#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"navigationBarBackgroundColor": "#ffffff",
+						"disableScroll": true
+					}
+				},
+				{
+					"path": "me/educationcertification",
+					"style": {
+						"navigationBarTitleText": "学历认证",
+						"backgroundColor": "#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
+					"path": "me/editAbout",
+					"style": {
+						"navigationBarTitleText": "",
+						"backgroundColorTop": "#F4F5F9",
+						"backgroundColorBottom": "#F4F5F9",
+						"navigationBarBackgroundColor": "#F4F5F9",
+						"backgroundColor": "#F4F5F9"
+					}
+				},
+				{
+					"path": "set/set",
+					"style": {
+						"navigationBarTitleText": "设置",
+						"backgroundColor": "#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"navigationBarBackgroundColor": "#ffffff",
+						"disableScroll": true
+					}
+				},
+				{
+					"path": "set/aboutme",
+					"style": {
+						"navigationBarTitleText": "关于我们",
+						"backgroundColor": "#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				 {
+					"path": "agreement/agreement",
+					"style": {
+						"navigationBarTitleText": "用户协议",
+						"backgroundColor": "#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
+					"path": "agreement/privacy",
+					"style": {
+						"navigationBarTitleText": "隐私策略",
+						"backgroundColor": "#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+
+				}, {
+					"path": "set/contact",
+					"style": {
+						"navigationBarTitleText": "合作联系",
+						"backgroundColor": "#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"navigationBarBackgroundColor": "#ffffff",
+						"enablePullDownRefresh": false,
+						"disableScroll": true
+					}
+
+				}
+			]
+		},
+		{
+			"root": "pageslike",
+			"pages": [
+				{
+					"path": "like/userInfo",
+					"style": {
+						"navigationBarTitleText": "用户详情",
+						"enablePullDownRefresh": false,
+						"onReachBottomDistance": 50,
+						"backgroundColor": "#F4F5F9",
+						"backgroundColorTop": "#F4F5F9",
+						"navigationBarBackgroundColor": "#F4F5F9",
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		},
+		{
+			"root": "pagespreference",
+			"pages": [{
+				"path": "preference/preference",
+				"style": {
+					"navigationBarTitleText": "推荐设置",
+					"backgroundColor": "#ffffff",
+					"backgroundColorTop": "#ffffff",
+					"navigationBarBackgroundColor": "#ffffff"
+				}
+			}]
+		},
+		{
+			"root": "pages2",
+			"pages": [{
+					"path": "explain/explain",
+					"style": {
+						"navigationStyle": "custom",
+						"backgroundColor": "#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"backgroundColorBottom": "#ffffff"
+					}
+				},
+			
+				{
+					"path": "school/selectSchool",
+					"style": {
+						"navigationBarTitleText": "选择学校",
+						"enablePullDownRefresh": true,
+						"onReachBottomDistance": 50,
+						"backgroundColor": "#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				}
+			]
+		},
+		{
+			"root": "pagescommunity",
+			"pages": [
+				{
+					"path" : "newsRelease/newsRelease",
+					"style" : 
+					{
+						"navigationBarTitleText" : "发布动态",
+						"enablePullDownRefresh" : false,
+						"navigationBarBackgroundColor":"#fff"
+					}
+				}
+			]
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#C9C9D0",
+		"selectedColor": "#333333",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/tab/index",
+				"iconPath": "static/tab/ld.png",
+				"selectedIconPath": "static/tab/lds.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/tab/msg",
+				"iconPath": "static/tab/msg.png",
+				"selectedIconPath": "static/tab/msgs.png",
+				"text": "消息"
+			},
+			{
+				"pagePath": "pages/tab/community",
+				"iconPath": "static/tab/sq.png",
+				"selectedIconPath": "static/tab/sqs.png",
+				"text": "社区"
+			},
+			{
+				"pagePath": "pages/tab/my",
+				"iconPath": "static/tab/my.png",
+				"selectedIconPath": "static/tab/mys.png",
+				"text": "我的"
+			}
+		]
+	}
+	
+}

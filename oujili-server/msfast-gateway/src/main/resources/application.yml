@@ -1,0 +1,24 @@
+# Tomcat
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+    connection-timeout: 5000ms
+  port: 8081
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: msfast-nostalgia
+          uri: lb://msfast-nostalgia
+          predicates:
+            - Path=/api/msfastnostalgia/**
+          filters:
+            - RewritePath=/api/msfastnostalgia/?(?<segment>.*), /$\{segment}
+  application:
+    name: msfast-gateway

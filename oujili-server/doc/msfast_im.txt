@@ -1,0 +1,57 @@
+websocket发送消息流程
+1 建立连接 wss://www.wxmblog.com/wssojl
+2 连接建立成功的回调中立刻发送用户连接请求发送一次 {"messageType":"CONNECT","info":"1"} 注意：确保是建立连接的成功回调里
+3 建立心跳 每秒发送一次 {"messageType":"ALIVE"} 如果心跳发送失败了 就是连接断了 重新初始化连接流程直到成功 可以通过断网再恢复网络连接测试
+4 发送消息
+  普通消息：
+  {"messageType":"IM_MESSAGE","info":"{'sendUserId':'2','acceptUserId':'1','content':'内容','messageFormat':'image/text/emote/voice/video'}"}
+  {"messageType":"IM_MESSAGE","info":"{'sendUserId':'1','acceptUserId':'69','content':'内容','messageFormat':'text'}"}
+  {"messageType":"IM_MESSAGE","info":"{\"acceptUserId\":\"69\",\"sendUserId\":1,\"content\":\"<div  style=\\\"\\\"><img style=\\\"max-width: 100px;\\\" src=\\\"https://www.wxmblog.com/sjydevapi//system/emoji/11.gif\\\"></div>\",\"messageFormat\":\"emoji\"}"}
+  发送消息要是失败了也需要不断重试 直到发送成功 这时消息左边loading才会消失否则该消息就需要一直转圈 websocket 也需要不断一直发保证发送成功
+  消息应答：
+  {"messageType":"ANSWER","info":"消息编号（该编号会在收到的消息msgNo中返回,收到的每条消息都需要应答 否则服务端会不断重复发送"}
+
+注意：发送后键盘不隐藏和微信一样
+
+websocket 测试网址：http://www.websocket-test.com/
+
+
+查询接口
+消息通讯模块
+查询消息列表 /message/list
+对话框消息列表  /message/info/{sendUserId}   sendUserId 是聊天的对方id 来自/message/list中
+删除列表 /message/list/delete/{sendUserId}
+消息未读总数 /message/un/read
+实现思路
+消息列表
+接口 /message/list
+1 建立连接 wss://www.wxmblog.com/wssojl
+2 连接建立成功的回调中立刻发送用户连接请求发送一次 {"messageType":"CONNECT","info":"1（登陆用户的id）"} 注意：确保是建立连接的成功回调里
+3 建立心跳 每秒发送一次 {"messageType":"ALIVE"}
+4 监听消息 一旦接收到消息 无论是谁发送的 都通过查询消息列表（/message/list）刷新消息列表 注意： 存在分页的刷新的处理 比如设置的每页页码为10条  当用户滑到第二页时这时接收到消息
+ 那么这时用户刷新列表页数就是1 20(第三页1 30 第四页1 40)  更新列表即可 这时用户可以继续滑到第三页 依然传 3 10后追加列表数据
+5
+ 消息应答：
+  {"messageType":"ANSWER","info":"消息编号（该编号会在收到的消息msgNo中返回,收到的每条消息都需要应答 否则服务端会不断重复发送）"}
+6 离开页面 需要销毁socket（在首页时菜单消息显示总数） 最好在点击到非消息列表时也能监听到消息 如果麻烦就算了
+
+对话框消息列表
+接口 /message/info/{sendUserId}   sendUserId 是聊天的对方id 来自/message/list中
+1 建立连接 wss://www.wxmblog.com/wssojl
+2 连接建立成功的回调中立刻发送用户连接请求发送一次 {"messageType":"CONNECT","info":"1（登陆用户的id）"} 注意：确保是建立连接的成功回调里
+3 建立心跳 每秒发送一次 {"messageType":"ALIVE"}
+4 监听消息 一旦接收到消息 无论是谁发送的 都通过查询消息列表（/message/info/{sendUserId}）刷新消息列表 注意： 存在分页的刷新的处理 比如设置的每页页码为10条  当用户滑到第二页时这时接收到消息
+ 那么这时用户刷新列表页数就是1 20(第三页1 30 第四页1 40)  更新列表即可 这时用户可以继续滑到第三页 依然传 3 10后追加列表数据
+5
+ 消息应答：
+  {"messageType":"ANSWER","info":"消息编号（该编号会在收到的消息msgNo中返回,收到的每条消息都需要应答 否则服务端会不断重复发送）"}
+
+删除列表
+/message/list/delete/{sendUserId}
+删除后刷新列表 同样要注意分页问题 同理对话框消息列表和消息列表
+
+消息未读总数 /message/un/read
+ 1 接收到消息刷新未读数 也要应答
+ 2 消息应答：
+     {"messageType":"ANSWER","info":"消息编号（该编号会在收到的消息msgNo中返回,收到的每条消息都需要应答 否则服务端会不断重复发送）"}
+

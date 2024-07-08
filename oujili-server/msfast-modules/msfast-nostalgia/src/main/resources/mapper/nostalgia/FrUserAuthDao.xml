@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.nostalgia.dao.FrUserAuthDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.nostalgia.entity.FrUserAuthEntity" id="frUserAuthMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="authStatus" column="auth_status"/>
+        <result property="authType" column="auth_type"/>
+        <result property="userId" column="user_id"/>
+        <result property="imgList" column="img_list"
+                typeHandler="com.wxmblog.nostalgia.common.handle.UserAuthImgListHandler"/>
+    </resultMap>
+
+
+</mapper>

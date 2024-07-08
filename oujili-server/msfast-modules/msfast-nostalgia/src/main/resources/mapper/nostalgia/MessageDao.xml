@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.nostalgia.dao.MessageDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.nostalgia.entity.MessageEntity" id="messageMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="userId" column="user_id"/>
+        <result property="senderId" column="sender_id"/>
+        <result property="content" column="content"/>
+        <result property="category" column="category"/>
+        <result property="replyId" column="reply_id"/>
+        <result property="articleId" column="article_id"/>
+        <result property="articleCommentId" column="article_comment_id"/>
+        <result property="commentReplyId" column="comment_reply_id"/>
+        <result property="articleContent" column="article_content"/>
+        <result property="articleImg" column="article_img" typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+        <result property="status" column="status"/>
+    </resultMap>
+    <resultMap id="messagePageResponse"
+               type="com.wxmblog.nostalgia.common.rest.response.front.article.MessagePageResponse">
+        <result property="img" column="img"
+                typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+    </resultMap>
+
+    <!--朋友圈 动态列表-->
+    <select id="getMessagePage" resultMap="messagePageResponse"
+            parameterType="integer">
+        SELECT
+            m.id,
+            m.sender_id,
+            sender.head_portrait AS senderHeadPortrait,
+            sender.city AS senderIp,
+            sender.nick_name AS senderNickName,
+            m.create_time,
+            m.category,
+            m.reply_id,
+            reply.nick_name AS replyNickName,
+            m.content,
+            m.article_id,
+            a.user_id AS articleUserId,
+            actuser.nick_name AS articleUserNickName,
+            m.article_content,
+            m.article_img AS img,
+            m.article_comment_id,
+            m.comment_reply_id
+        FROM
+            message m
+                LEFT JOIN fr_user sender ON m.sender_id = sender.id
+                LEFT JOIN fr_user reply ON m.reply_id = reply.id
+                LEFT JOIN article a ON m.article_id = a.id
+                LEFT JOIN fr_user actuser ON a.user_id = actuser.id
+        WHERE
+            m.del_flag = 0
+          AND m.user_id = #{ownerId}
+        ORDER BY
+            m.create_time DESC
+    </select>
+
+</mapper>
