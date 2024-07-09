@@ -37,11 +37,12 @@ https://www.wxmblog.com/categories/open
 # sql脚本和静态资源文件获取
 获取脚本和静态资源文件有两种方式，一种免费（做个小任务，就git上star一下和插件市场好评下即可)，另一种付费(请我喝杯奶茶即可)
 ## 方式一 做任务获取（免费）
-步骤一： 分别去，github和gitee 上star一下本项目，uniapp 插件市场五星好评本项目 <br>
-步骤二：添加作者微信（MMRWXM），发送star和好评的用户名称，核实后发送脚本和文件给你  <br>
+步骤一： github和gitee 上star本项目，uniapp 插件市场五星好评本项目，三个任意选一个即可 <br>
+步骤二：添加作者微信（MMRWXM），发送star和好评的截图，核实后发送脚本和文件给你  <br>
 github地址：https://github.com/378526425/oujili <br>
 gitee地址：https://gitee.com/wxmr0/oujili <br>
 插件市场地址：https://ext.dcloud.net.cn/plugin?id=15999 <br>
+
 ## 方式二 直接付费获取
 如果觉得做任务太麻烦了，可以直接付费获取，价格不多，请我喝杯奶茶意思下即可<br>
 付费获取地址：https://t.cn/A6QmlSrp <br>
