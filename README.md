@@ -96,6 +96,7 @@ platform
 - 社区朋友圈
 - 好友动态列表
 - 评论点赞互动
+- 消息通知
 - 我喜欢和喜欢我列表
 - 学历认证
 - 实名认证
@@ -119,6 +120,10 @@ platform
 
 ![image-1704095985738](https://www.wxmblog.com/upload/2024/01/image-1704095985738.png)
 
+![image-1720543710239](https://www.wxmblog.com/upload/2024/07/image-1720543710239.png)
+
+![image-1720543768089](https://www.wxmblog.com/upload/2024/07/image-1720543768089.png)
+
 ![image-1704096286155](https://www.wxmblog.com/upload/2024/01/image-1704096286155.png)
 
 ![image-1704096379510](https://www.wxmblog.com/upload/2024/01/image-1704096379510.png)
@@ -135,11 +140,9 @@ platform
 
 ![image-1704097048206](https://www.wxmblog.com/upload/2024/01/image-1704097048206.png)
 
-
-
 ![image-1704097967350](https://www.wxmblog.com/upload/2024/01/image-1704097967350.png)
 
-![image-1704097159090](https://www.wxmblog.com/upload/2024/01/image-1704097159090.png)
+![image-1720543671736](https://www.wxmblog.com/upload/2024/07/image-1720543671736.png)
 
 ![image-1704097243586](https://www.wxmblog.com/upload/2024/01/image-1704097243586.png)
 
