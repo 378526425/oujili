@@ -435,7 +435,7 @@
 				}
 			},
 			gotoeditInfo() {
-				this.tipMsg = "开源版暂未开放，敬请期待";
+				this.tipMsg = "开源版暂未开放，敬请期待！如需旗舰版，可联系作者微信（MMRWXM）咨询";
 				this.$refs.elm.showDialog();
 			},
 			async getUserIno() {

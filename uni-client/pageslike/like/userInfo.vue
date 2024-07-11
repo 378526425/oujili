@@ -425,9 +425,8 @@
 		},
 		methods: {
 			goDynamicState(){
-				uni.navigateTo({
-					url:"/pagescommunity/dynamicState/dynamicState?id="+this.id
-				})
+				this.tipMsg = "开源版暂未开放，敬请期待！如需旗舰版，可联系作者微信（MMRWXM）咨询";
+				this.$refs.elm.showDialog();
 			},
 			confirm() {
 				this.isShow = false;
@@ -574,7 +573,9 @@
 								fail: err => {}
 							});
 						},
-						fail: errinfo => {}
+						fail: errinfo => {
+							this.setCode(this.generateRandomString(10), 'null');
+						}
 					});
 				} catch {
 					wx.getUserInfo({
@@ -657,6 +658,30 @@
 						delta: 1, //返回层数，2则上上页
 					})
 				}
+			},
+			generateRandomString(length) {
+				let result = uni.getStorageSync('touristopenid');
+				if (result != null&&result!="") {
+					return result;
+				}else{
+					result='';
+				}
+				const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; // 包含大小写字母和数字的所有字符集合
+				
+				for (let i = 0; i < length; i++) {
+					const randomIndex = Math.floor(Math.random() * characters.length);
+					result += characters[randomIndex];
+				}
+				var now = new Date();
+				var year = now.getFullYear(); // 年份
+				var month = (now.getMonth() + 1).toString().padStart(2, '0'); // 月份（注意要加上1）
+				var day = now.getDate().toString().padStart(2, '0'); // 天数
+				var hours = now.getHours().toString().padStart(2, '0'); // 小时
+				var minutes = now.getMinutes().toString().padStart(2, '0'); // 分钟
+				var seconds = now.getSeconds().toString().padStart(2, '0'); // 秒数
+				result = "touristopenid" + result + (+year + month + day + hours + minutes + seconds);
+				uni.setStorageSync('touristopenid', result);
+				return result;
 			}
 		}
 	};

@@ -124,7 +124,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
             }
             model.setTime(DateUtils.getChineseTime(model.getCreateTime()));
             model.setCreateTime(null);
-            model.setIsDelete(model.getUserId().compareTo(TokenUtils.getOwnerId()) == 0);
+            model.setIsDelete(TokenUtils.getOwnerId()!=null&&model.getUserId().compareTo(TokenUtils.getOwnerId()) == 0);
         });
         return result;
     }
