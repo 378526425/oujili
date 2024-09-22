@@ -10,7 +10,7 @@ https://www.wxmblog.com/archives/fang-qing-teng-zhi-lian-she-jiao-jiao-you-ruan-
 https://www.wxmblog.com/oujili
 ## 安卓APK
 下载地址：
-https://www.wxmblog.com/devminio/oujili/2024/09/22/eb006d3e-4771-41db-8a30-614b1233ae3e.apk
+https://www.wxmblog.com/devminio/oujili/2024/09/22/2c73cd3d-ae8b-4987-9133-16dc75fec051.apk
 ## 后台管理演示地址
 http://1.14.110.117:8089<br>
 账号：demo<br>
