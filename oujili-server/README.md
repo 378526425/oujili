@@ -24,7 +24,11 @@ minio<br>
 4. 构建好项目后，加载maven相关依赖，如果出现com.wxmblog相关依赖包无法下载，请检查maven仓库是否配置正确，例如 配置了阿里云maven镜像仓库时配置了central或是 ，如果工程中的jar包都能在阿里镜像中找到，mirrorOf填central还是都是可以的。central表示覆盖maven中央仓库的默认url，*表示所有的仓库都到我配置的这个url取，所以会导致部分依赖阿里云镜像更新不及时而提示包不存在的错误，请以maven官方中央仓库为准，可以尝试修改为maven默认配置，就是下载maven后最原始的配置，不使用阿里云仓库<br>
 5. 部署启动命令 nohup java -Dfile.encoding=utf-8  -jar reservation.jar & <br> 
 6. 运行时部分图片和字体文件会报404的错误，是为了减少客户端内存,静态资源文件部署在服务端，将此项目doc文件夹中upload文件夹放至服务端静态文件路径下即可（可通过yml文件中 wxmfast.config.file.static-path 修改，例如：/home/oujili/upload） <br>
-
+7. 后台管理员登录账号和密码通过yml配置文件配置，具体配置项
+   wxmfast.config.role.username:admin
+   wxmfast.config.role.password:123456
+   wxmfast.config.role.touristUsername:demo
+   wxmfast.config.role.touristPassword:123456
 # 联系我们
 ## 作者微信
 MMRWXM <br>
